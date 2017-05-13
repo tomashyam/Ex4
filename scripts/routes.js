@@ -1,21 +1,39 @@
 angular.module('MenuApp')
-.config(RoutesConfig);
+  .config(RoutesConfig);
 
 RoutesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
+
 function RoutesConfig($stateProvider, $urlRouterProvider) {
 
   // Redirect to tab 1 if no other URL matches
-  $urlRouterProvider.otherwise('../home');
+  $urlRouterProvider.otherwise('home');
 
   // Set up UI states
   $stateProvider
     .state('home', {
       url: '/home',
-      templateUrl: 'home.html'
+      templateUrl: './templates/home.html',
+
     })
 
-    .state('tab2', {
-      url: '/tab2',
-      templateUrl: 'src/tab2.html'
+    .state('categories', {
+      url: '/categories',
+      component: 'categories',
+      resolve: {
+        categories: ['MenuDataService', function (MenuDataService) {
+          console.log('happend');
+          return MenuDataService.getAllCategories();
+        }]
+      }
+    })
+    .state('items', {
+    url: '/item-detail/{category}',
+    component:  'items',
+    resolve: {
+      category: ['$stateParams', 'MenuDataService',
+        function ($stateParams, MenuDataService) {
+          return MenuDataService.getItemsForCategory($stateParams.category)
+        }]
+      }
     });
 }

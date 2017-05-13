@@ -1,4 +1,7 @@
-// var menuModule = angular.module("MenuApp")
-// menuModule.component("categories", {
-
-// });
+var menuModule = angular.module("MenuApp")
+menuModule.component("categories", {
+    templateUrl: "templates/categories.html",
+    bindings: {
+        categories: '<',
+    }
+});
